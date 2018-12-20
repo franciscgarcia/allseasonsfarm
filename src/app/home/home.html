@@ -1,0 +1,14 @@
+<div layout="row" layout-align="none stretch" flex>
+  <div>
+    <md-sidenav  layout="column" md-component-id="sidenav" ng-init="hc.init()">
+      <sidenav-menu model="hc.modules" hidefnc="hc.toggleSidenav('sidenav')" logout="hc.logout($event)"></sidenav-menu>
+    </md-sidenav>
+  </div>
+  <md-divider></md-divider>
+  <div layout="column" flex>
+    <app-header layout="column"></app-header>
+    <md-content flex layout="column">
+      <ui-view flex layout="column"> </ui-view>
+    </md-content>
+  </div>
+</div>

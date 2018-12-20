@@ -1,0 +1,538 @@
+<div layout="column" ng-init="rc.init()" flex>
+  <md-tabs md-selected="data.selectedIndex" layout="column" layout-fill flex>
+    <md-tab label="Profit History" layout layout-fill>
+      <!-- tab view wrapper -->
+      <div layout="column" layout-fill>
+        <div layout flex="10">
+          <div layout layout-align="start center" layout-padding flex="30">
+            <div flex="30">View By:</div>
+            <div flex>
+              <md-select ng-model="rc.crop.family" aria-label="Crop Family">
+                <md-option>1</md-option>
+                <md-option>1</md-option>
+                <md-option>1</md-option>
+              </md-select>
+            </div>
+          </div>
+        </div>  
+        <!-- graph -->
+        <div layout layout-align="center center" flex>
+          <canvas id="bar" 
+                  class="chart chart-bar" 
+                  chart-data="rc.profitHistory" 
+                  chart-labels="rc.salesHistoryLabels1" 
+                  chart-series="rc.salesHistorySeries1" 
+                  chart-options="rc.chartOptions" 
+                  chart-colors="rc.colors">
+          </canvas>
+        </div>        
+        <!-- graph -->
+      </div>
+      <!-- tab view wrapper -->
+    </md-tab>
+
+    <md-tab label="Acoounting Books">
+      <!-- tab view wrapper -->
+
+      <div layout="column" style="height: 100%;">
+        <!-- <md-button class="md-fab md-mini md-fab-bottom-right md-primary md-hue-2" aria-label="Filters">
+          <md-icon>filter_list</md-icon>
+        </md-button> -->
+        <div layout style="height: 100%;">
+          <md-table-container style="overflow: hidden;" flex="noshrink">
+            <table md-table>
+              <thead md-head>
+                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center" flex="noshrink"></div>
+                <tr md-row>
+                  <th md-column>Accounts</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat="column in rc.mainColumn | limitTo: rc.datatable.limit : (rc.datatable.page -1) * rc.datatable.limit track by $index">
+                  <td md-cell>
+                    <div layout layout-padding layout-align="start none" style="font-weight: 600;">
+                      {{ column }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>          
+            </table>
+          </md-table-container> 
+
+          <md-table-container style="overflow: hidden;" flex="noshrink">
+            <table md-table>
+              <thead md-head>
+                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center" flex>Trial Balance</div>
+                <tr md-row >
+                  <th md-column>Debit</th>
+                  <th md-column>Credit</th>
+                </tr>
+              </thead>
+              <tbody style="border-right: 1px solid black;" md-body>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.firstTableData.trial_balance.raw_materials.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.raw_materials.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.firstTableData.trial_balance.indirect_materials.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.indirect_materials.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.firstTableData.trial_balance.equipment.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.equipment.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.firstTableData.trial_balance.wpi.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.wpi.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.firstTableData.trial_balance.direct_labor.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.direct_labor.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.firstTableData.trial_balance.indirect_labor.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.indirect_labor.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.firstTableData.trial_balance.salaries_expense.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.salaries_expense.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.firstTableData.trial_balance.fgi.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.fgi.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.firstTableData.trial_balance.cgs.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.cgs.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.firstTableData.trial_balance.sales_revenue.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.sales_revenue.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.firstTableData.trial_balance.cash.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.firstTableData.trial_balance.cash.cr }}
+                    </div>
+                  </td>   
+                </tr>
+              </tbody>          
+            </table>
+          </md-table-container>
+                
+          <md-table-container style="overflow: hidden;" flex="noshrink">
+            <table md-table>
+              <thead md-head>
+                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center" flex>Adjusted Trial Balance</div>
+                <tr md-row >
+                  <th md-column>Debit</th>
+                  <th md-column>Credit</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.secondTableData.adjusted_tb.raw_materials.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.raw_materials.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.secondTableData.adjusted_tb.indirect_materials.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.indirect_materials.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.secondTableData.adjusted_tb.equipment.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.equipment.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.secondTableData.adjusted_tb.wpi.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.wpi.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.secondTableData.adjusted_tb.direct_labor.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.direct_labor.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.secondTableData.adjusted_tb.indirect_labor.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.indirect_labor.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.secondTableData.adjusted_tb.salaries_expense.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.salaries_expense.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.secondTableData.adjusted_tb.fgi.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.fgi.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.secondTableData.adjusted_tb.cgs.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.cgs.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.secondTableData.adjusted_tb.sales_revenue.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.sales_revenue.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.secondTableData.adjusted_tb.cash.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.secondTableData.adjusted_tb.cash.cr }}
+                    </div>
+                  </td>   
+                </tr>
+              </tbody>          
+            </table>
+          </md-table-container>
+          
+          <md-table-container style="overflow: hidden;" flex="noshrink">
+            <table md-table>
+              <thead md-head>
+                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center" flex>Statement of Financial Position</div>
+                <tr md-row >
+                  <th md-column>Debit</th>
+                  <th md-column>Credit</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.thirdTableData.statement_of_fin_pos.raw_materials.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.raw_materials.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.thirdTableData.statement_of_fin_pos.indirect_materials.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.indirect_materials.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.thirdTableData.statement_of_fin_pos.equipment.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.equipment.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.thirdTableData.statement_of_fin_pos.wpi.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.wpi.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.thirdTableData.statement_of_fin_pos.direct_labor.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.direct_labor.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.thirdTableData.statement_of_fin_pos.indirect_labor.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.indirect_labor.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.thirdTableData.statement_of_fin_pos.salaries_expense.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.salaries_expense.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.thirdTableData.statement_of_fin_pos.fgi.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.fgi.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.thirdTableData.statement_of_fin_pos.cgs.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.cgs.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.thirdTableData.statement_of_fin_pos.sales_revenue.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.sales_revenue.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.thirdTableData.statement_of_fin_pos.cash.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.thirdTableData.statement_of_fin_pos.cash.cr }}  
+                    </div>
+                  </td>   
+                </tr>
+              </tbody>          
+            </table>
+          </md-table-container>
+
+          <md-table-container style="overflow: hidden;" flex="noshrink">
+            <table md-table>
+              <thead md-head>
+                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center" flex>Statement of Comprehensive Income</div>
+                <tr md-row >
+                  <th md-column>Debit</th>
+                  <th md-column>Credit</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.fourthTableData.statement_of_comp_inc.raw_materials.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.raw_materials.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.fourthTableData.statement_of_comp_inc.indirect_materials.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.indirect_materials.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.fourthTableData.statement_of_comp_inc.equipment.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.equipment.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.fourthTableData.statement_of_comp_inc.wpi.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.wpi.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.fourthTableData.statement_of_comp_inc.direct_labor.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.direct_labor.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.fourthTableData.statement_of_comp_inc.indirect_labor.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.indirect_labor.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.fourthTableData.statement_of_comp_inc.salaries_expense.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.salaries_expense.cr }}
+                    </div>                    
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.fourthTableData.statement_of_comp_inc.fgi.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.fgi.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.fourthTableData.statement_of_comp_inc.cgs.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.cgs.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">
+                    {{ rc.fourthTableData.statement_of_comp_inc.sales_revenue.dr }}
+                  </td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.sales_revenue.cr }}
+                    </div>
+                  </td>   
+                </tr>
+                <tr md-row>
+                  <td md-cell class="revenue-cell">{{ rc.fourthTableData.statement_of_comp_inc.cash.dr }}</td>
+                  <td md-cell>
+                    <div layout layout-padding layout-align="end">
+                      {{ rc.fourthTableData.statement_of_comp_inc.cash.cr }}
+                    </div>
+                  </td>   
+                </tr>
+              </tbody>          
+            </table>
+          </md-table-container>
+        </div>
+      </div>
+      <!-- tab view wrapper -->
+    </md-tab>
+  </md-tabs>
+</div>

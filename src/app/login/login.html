@@ -1,0 +1,67 @@
+<md-content layout="column" layout-align="center center" md-colors="{'background': 'primary'}" layout-fill>
+  <div class="loginDiv" ng-init="lc.init()" layout="column">
+    <form name="loginForm" layout="column" novalidate>
+      <div layout="column" layout-padding>
+        <!-- email -->
+        <div>
+          <md-input-container style="margin:10px 0px;" class="md-block">
+            <md-icon class="md-primary">account_circle</md-icon>
+            <div layout="column">
+              <div layout>
+                <div layout flex style="padding-left: 11%;">
+                  <label style="padding-left: 12%;">Email</label>
+                  <input md-autofocus name="username" ng-model="lc.username" maxlength="50" ng-change="lc.enteremail(lc.username)">
+                </div>
+                <div flex="10"></div>
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+        <!-- email end -->
+
+        <!-- pasword -->
+        <div>
+          <md-input-container style="margin:10px 0px;" class="md-block">
+            <md-icon class="md-primary" flex>lock</md-icon>
+            <div layout="column">
+              <div layout="row">
+                <div layout flex style="padding-left: 11%;">
+                  <label style="padding-left: 12%;">Password</label>
+                  <input name="password" ng-model="lc.password" maxlength="20" type="password" ng-attr-type="{{ lc.toggle ? 'password' : 'text' }}">
+                </div>
+                <div layout layout-align="end center" flex="10">
+                  <md-button class="md-icon-button" style="margin: 0; padding: 0;" ng-click="lc.toggle=!lc.toggle">
+                    <md-icon>{{lc.toggle ? 'visibility_off' : 'visibility'}}</md-icon>
+                    <md-tooltip md-direction="right">Show Password</md-tooltip>
+                  </md-button>
+                </div>
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+        <!-- pasword end -->
+
+        <!-- error messages -->
+        <div layout layout-align="center center">
+          <div ng-show="lc.errorMessage" style="color: #F44336; font-size: 13px;">
+            {{ lc.errorMessage }}
+          </div>
+        </div>
+        <!-- error messages end -->
+        <div layout layout-align="center center" flex="noshrink">
+          <md-button ng-disabled="lc.loggingIn" flex="noshrink" id="loginBtn" md-theme="{{ fcmc.selectedTheme }}" class="md-primary md-raised"  ng-click="lc.login()">
+            <b>{{ lc.loggingIn ? 'Logging in' : 'Login' }}</b>
+          </md-button>
+        </div>
+      </div>
+    </form>
+    <!-- <div style="margin: 0 auto; text-align: center; padding: 0 2% 2%;" flex="noshrink">
+      <a style="text-decoration: none; cursor: pointer;" mdx-paint-fg="md-primary" ui-sref="forgot-password">
+        Forgot Password
+      </a>
+    </div> -->
+  </div>
+  <div layout layout-align="center start" layout-padding style="color: white;" >
+    v0.0.1
+  </div>
+</md-content>

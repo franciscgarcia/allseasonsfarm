@@ -1,0 +1,20 @@
+<div layout="column">
+  <div style="cursor: pointer;" ng-repeat="module in model" layout="column">
+    <div layout="row" layout-align="none center" layout-padding ui-sref="{{module.url}}" ng-click="hidefnc({sidenav: sidenav})">
+      <i class="material-icons" style="margin-right: 10px;" md-colors="{color: module.color}">
+        {{module.icon}}
+      </i>
+      <span style="background-color: #00000000" class="md-subheader">
+        {{module.name}}
+      </span>
+    </div>
+    <md-divider></md-divider>
+  </div>
+  <div flex></div>
+  <div style="cursor: pointer;">
+    <div style="height: 50px;" layout="row" layout-align="none center" layout-padding ng-click="logout({$event: $event})">
+      <i class="material-icons" style="margin-right: 10px;" md-colors="{color: 'blue'}">exit_to_app</i><span style="background-color: rgba(0,0,0,0)" class="md-subheader">Logout</span>
+    </div>
+    <md-divider></md-divider>
+  </div>
+</div>

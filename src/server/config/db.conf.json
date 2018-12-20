@@ -1,0 +1,7 @@
+{
+  "user": "admin",
+  "password": "Pass123!",
+  "port": "3306",
+  "host": "127.0.0.1",
+  "database": "all_seasons_farm"
+}

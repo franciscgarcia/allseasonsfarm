@@ -1,0 +1,86 @@
+<md-dialog flex="30" style="overflow: hidden;" ng-init="aec.init()">
+    <md-toolbar layout layout-align="center center">
+      <div class="md-toolbar-tools">
+        <div>
+          Add New Employee
+        </div>
+        <div flex></div>
+        <md-icon style="cursor: pointer;" ng-click="aec.closeModal()">close</md-icon>
+      </div>
+    </md-toolbar>
+  
+    <div layout="column" style="overflow-y: auto;" layout-padding>
+      <div layout layout-align="start center" flex>
+        <div flex="30" flex="noshrink">First Name:</div>
+        <div flex></div>
+        <div flex="60">
+          <md-input-container class="input-container">
+            <input ng-model="employee.first_name" aria-label="Employee First Name">
+          </md-input-container>
+        </div>
+      </div>
+      
+      <div layout layout-align="start center" flex>
+        <div flex="30" flex="noshrink">Middle Name:</div>
+        <div flex></div>
+        <div flex="60">
+          <md-input-container class="input-container">
+            <input ng-model="employee.middle_name" aria-label="Employee Middle Name">
+          </md-input-container>
+        </div>
+      </div>
+      
+      <div layout layout-align="start center" flex>
+        <div flex="30" flex="noshrink">Last Name:</div>
+        <div flex></div>
+        <div flex="60">
+          <md-input-container class="input-container">
+            <input ng-model="employee.last_name" aria-label="Employee Last Name">
+          </md-input-container>
+        </div>
+      </div>
+      
+      <div layout layout-align="start center" flex>
+        <div flex="30" flex="noshrink">Position:</div>
+        <div flex></div>
+        <div flex="60">
+          <md-input-container class="input-container">
+            <md-select style="width: 100%" ng-model="employee.position" aria-label="Employee Position">
+              <md-option ng-value="position.id" ng-repeat="position in aec.positions">
+                {{position.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </div>
+  
+      <div layout layout-align="start center" flex>
+        <div flex="30" flex="noshrink">Salary:</div>
+        <div flex></div>
+        <div flex="60">
+          <md-input-container class="input-container">
+            <input ng-model="employee.salary" type="number" aria-label="Employee First Name">
+          </md-input-container>
+        </div>
+      </div>
+      
+      
+      <div layout layout-align="start center" flex>
+        <div flex="30" flex="noshrink">Status:</div>
+        <div flex></div>
+        <div flex="60">
+          <md-input-container class="input-container">
+            <md-select style="width: 100%" ng-model="employee.status" aria-label="Employee Status">
+              <md-option ng-value="status.id" ng-repeat="status in aec.states">
+                {{status.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </div>
+    </div>
+  
+    <footer layout layout-align="end center">
+      <md-button style="line-height: 20px;" ng-click="aec.addNewEmployee()" class="md-primary md-raised">Add</md-button>
+    </footer>
+  </md-dialog>

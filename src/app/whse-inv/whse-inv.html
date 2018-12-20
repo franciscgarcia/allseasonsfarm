@@ -1,0 +1,314 @@
+<div layout="column" ng-init="wic.init()" flex>
+  <md-tabs md-selected="data.selectedIndex" layout="column" layout-fill flex>
+    <md-tab label="Warehouse Inventory">
+      <div layout="column" layout-fill>
+        <div layout flex>
+          <md-table-container flex>
+            <table md-table>
+              <thead md-head>
+                <tr md-row >
+                  <th md-column>Name</th>
+                  <th md-column>Category</th>
+                  <th md-column>Quantity</th>              
+                  <th md-column>Price</th>              
+                  <th md-column>Type</th>
+                  <th md-column>Supplier</th>              
+                  <th md-column>Brand</th>              
+                  <th md-column>Unit</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr ng-hide="srlc.mainData.length > 0 || srlc.dataLoading" class="md-row">
+                  <td colspan="100%" class="text-center md-cell">No Records Found</td>
+                </tr>
+                <tr class="md-row clickableRow" ng-repeat="data in srlc.mainData | limitTo: srlc.datatable.limit : (srlc.datatable.page -1) * srlc.datatable.limit track by $index" >
+                  <td md-cell>{{ data.name }}</td>
+                  <td md-cell>{{ data.category }}</td>
+                  <td md-cell>{{ data.quantity }}</td>    
+                  <td md-cell>{{ data.price }}</td>    
+                  <td md-cell>{{ data.type }}</td>    
+                  <td md-cell>{{ data.supplier }}</td>    
+                  <td md-cell>{{ data.brand }}</td>    
+                  <td md-cell>{{ data.unit }}</td>    
+                </tr>
+                <tr ng-show="srlc.dataLoading">
+                  <td colspan="100%"><md-progress-linear></md-progress-linear></td>
+                </tr>
+                <tr ng-show="srlc.errorRetrieve">
+                  <td>Error Loading Data</td>
+                </tr>
+              </tbody>          
+            </table>
+          </md-table-container>
+        </div>
+        <md-divider></md-divider>
+        <footer layout layout-align="end center">
+          <md-table-pagination style="border: none;" md-limit="srlc.datatable.limit" md-limit-options="[25,50,100,200]" md-page="srlc.datatable.page" md-total="{{srlc.totalCount}}" md-page-select="true" md-boundary-links="true" md-on-paginate="onPaginate"></md-table-pagination>
+        </footer>
+      </div>     
+    </md-tab>
+    
+    <!-- tab 2 -->
+    <md-tab label="Define New Items" layout layout-fill>
+      <div layout="column" layout-fill>
+        <div layout layout-align="start center" flex>
+          <div layout-fill flex="25">
+            <md-card layout="column" layout-align="space-around stretch" layout-fill layout-padding>
+              <div layout ng-class="{'whse-define-div': true, 'whse-define-div-selected': wic.itemDefinitions[0].selected}" ng-click="wic.defineNewItem('produce')">
+                <h3 class="md-subhead" flex="noshrink">Define Produce</h3>
+                <span flex></span>
+                <md-icon ng-if="wic.itemDefinitions[0].selected">chevron_right</md-icon>
+              </div>
+              <div layout ng-class="{'whse-define-div': true, 'whse-define-div-selected': wic.itemDefinitions[1].selected}" ng-click="wic.defineNewItem('fertilizer')">
+                <h3 class="md-subhead" flex="noshrink">Define Fertilizer</h3>
+                <span flex></span>
+                <md-icon ng-if="wic.itemDefinitions[1].selected">chevron_right</md-icon>
+              </div>
+              <div layout ng-class="{'whse-define-div': true, 'whse-define-div-selected': wic.itemDefinitions[2].selected}" ng-click="wic.defineNewItem('insecticide')">
+                <h3 class="md-subhead" flex="noshrink">Define Insecticide</h3>
+                <span flex></span>
+                <md-icon ng-if="wic.itemDefinitions[2].selected">chevron_right</md-icon>
+              </div>
+              <div layout ng-class="{'whse-define-div': true, 'whse-define-div-selected': wic.itemDefinitions[3].selected}" ng-click="wic.defineNewItem('equipment')">
+                <h3 class="md-subhead" flex="noshrink">Define Other Equipment</h3>
+                <span flex></span>
+                <md-icon ng-if="wic.itemDefinitions[3].selected">chevron_right</md-icon>
+              </div>
+            </md-card>
+          </div>
+          
+          <div layout-fill flex>
+            <md-card layout-fill layout-padding>
+              <div layout="column" layout-align="space-around stretch"  layout-fill ng-if="wic.itemDefinitions[0].selected">
+                <div layout layout-align="center center" flex>
+                  <span flex="20">Crop Family:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.crop.family" aria-label="Crop Family">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center" flex>
+                  <span flex="20">Crop Name:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.crop.name" aria-label="Crop Name">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center" flex>
+                  <span flex="20">Crop Variety:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.crop.variety" aria-label="Crop Variety">
+                    </md-input-container>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center" flex>
+                  <span flex="20">Seeds Quantity:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.crop.seeds.quantity" aria-label="Seeds Quantity">
+                    </md-input-container>
+                  </div>
+                </div>
+    
+                <div layout layout-align="center center" flex>
+                  <span flex="20">Seeds Unit:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.crop.seeds.unit" aria-label="Seeds Unit">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+    
+                <div layout layout-align="center center" flex>
+                  <span flex="20">Seeds Cost:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.crop.seeds.cost" aria-label="Seeds Cost">
+                    </md-input-container>
+                  </div>
+                </div>
+              </div>
+
+              <div layout="column" layout-align="space-around stretch"  layout-fill  ng-if="wic.itemDefinitions[1].selected">
+                <div layout layout-align="center center">
+                  <span flex="20">Fertilizer Type:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.fertilizer.type" aria-label="Fertilizer Type">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center">
+                  <span flex="20">Supplier Name:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.fertilizer.supplier_name" aria-label="Supplier Name">
+                    </md-input-container>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center">
+                  <span flex="20">Brand Name:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.fertilizer.brand_name" aria-label="Brand Name">
+                    </md-input-container>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center">
+                  <span flex="20">Fertilizer Quantity:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.fertilizer.quantity" aria-label="Fertilizer Quantity">
+                    </md-input-container>
+                  </div>
+                </div>
+    
+                <div layout layout-align="center center">
+                  <span flex="20">Fertilizer Unit:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.fertilizer.unit" aria-label="Fertilizer Unit">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+    
+                <div layout layout-align="center center">
+                  <span flex="20">Fertilizer Cost:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.fertilizer.cost" aria-label="Fertilizer Cost">
+                    </md-input-container>
+                  </div>
+                </div>
+              </div>
+              
+              <div layout="column" layout-align="space-around stretch"  layout-fill  ng-if="wic.itemDefinitions[2].selected">
+                <div layout layout-align="center center">
+                  <span flex="20">Insecticide Type:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.insecticide.type" aria-label="Insecticide Type">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center">
+                  <span flex="20">Supplier Name:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.insecticide.supplier_name" aria-label="Supplier Name">
+                    </md-input-container>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center">
+                  <span flex="20">Brand Name:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.insecticide.brand_name" aria-label="Brand Name">
+                    </md-input-container>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center">
+                  <span flex="20">Insecticide Quantity:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.insecticide.quantity" aria-label="Insecticide Quantity">
+                    </md-input-container>
+                  </div>
+                </div>
+    
+                <div layout layout-align="center center">
+                  <span flex="20">Insecticide Unit:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.insecticide.unit" aria-label="Insecticide Unit">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+    
+                <div layout layout-align="center center">
+                  <span flex="20">Insecticide Cost:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.insecticide.cost" aria-label="Insecticide Cost">
+                    </md-input-container>
+                  </div>
+                </div>
+              </div>
+
+              <div layout="column" layout-align="space-around stretch"  layout-fill  ng-if="wic.itemDefinitions[3].selected">
+                <div layout layout-align="center center">
+                  <span flex="20">Item Type:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.item.type" aria-label="Item Type">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center">
+                  <span flex="20">Item Name:</span>
+                  <div flex="30">
+                    <md-select ng-model="srlc.item.name" aria-label="Item Name">
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                      <md-option>1</md-option>
+                    </md-select>
+                  </div>
+                </div>
+                
+                <div layout layout-align="center center">
+                  <span flex="20">Unit Quantity:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.unit.quantity" aria-label="Unit Quantity">
+                    </md-input-container>
+                  </div>
+                </div>
+    
+                <div layout layout-align="center center">
+                  <span flex="20">Item Cost:</span>
+                  <div flex="30">
+                    <md-input-container class="input-container-whse">
+                      <input ng-model="srlc.item.cost" aria-label="Item Cost">
+                    </md-input-container>
+                  </div>
+                </div>
+              </div>
+            </md-card>
+          </div>
+        </div>
+        <footer layout layout-align="end center">
+          <md-button class="md-primary md-raised md-hue-2">Save</md-button>
+        </footer>
+      </div>
+    </md-tab>
+  </md-tabs>
+</div>

@@ -1,0 +1,95 @@
+<div layout="column" flex>
+  <md-tabs md-selected="data.selectedIndex" layout="column" layout-fill flex>
+    <md-tab label="Employee List">
+      <div layout="column" layout-fill>
+        <div layout flex>
+          <md-table-container flex>
+            <table md-table>
+              <thead md-head>
+                <tr md-row >
+                  <th md-column>Name</th>
+                  <th md-column>Position</th>
+                  <th md-column>Role</th>              
+                  <th md-column>Salary</th>              
+                  <th md-column>Status</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr ng-hide="srlc.mainData.length > 0 || srlc.dataLoading" class="md-row">
+                  <td colspan="100%" class="text-center md-cell">No Records Found</td>
+                </tr>
+                <tr class="md-row clickableRow" ng-repeat="data in srlc.mainData | limitTo: srlc.datatable.limit : (srlc.datatable.page -1) * srlc.datatable.limit track by $index" >
+                  <td md-cell>{{ data.name }}</td>
+                  <td md-cell>{{ data.position }}</td>
+                  <td md-cell>{{ data.role }}</td>    
+                  <td md-cell>{{ data.salary }}</td>    
+                  <td md-cell>{{ data.status }}</td>    
+                </tr>
+                <tr ng-show="srlc.dataLoading">
+                  <td colspan="100%"><md-progress-linear></md-progress-linear></td>
+                </tr>
+                <tr ng-show="srlc.errorRetrieve">
+                  <td>Error Loading Data</td>
+                </tr>
+              </tbody>          
+            </table>
+          </md-table-container>
+        </div>
+        <md-divider></md-divider>
+        <footer layout layout-align="space-between center">
+          <div>
+            <md-button class="md-icon-button md-primary md-raised" ng-click="srlc.addEmployee($event)">
+              <md-icon>add</md-icon>
+              <md-tooltip md-direction="right">Define New Employee</md-tooltip>
+            </md-button>
+          </div>
+          <md-table-pagination style="border: none;" md-limit="srlc.datatable.limit" md-limit-options="[25,50,100,200]" md-page="srlc.datatable.page" md-total="{{srlc.totalCount}}" md-page-select="true" md-boundary-links="true" md-on-paginate="onPaginate"></md-table-pagination>
+        </footer>
+      </div>     
+    </md-tab>
+    
+    <md-tab label="Role Allocation" layout layout-fill>
+      <div layout="column" layout-fill>
+        <div layout layout-align="center start" flex>
+          <div layout="column" layout-align="space-around stretch" flex="50" layout-fill>
+            <div layout layout-align="center center"  layout-padding>
+              <span flex="30">Employee:</span>
+              <div flex="50">
+                <md-select ng-model="srlc.crop.family" aria-label="Crop Family">
+                  <md-option>1</md-option>
+                  <md-option>1</md-option>
+                  <md-option>1</md-option>
+                </md-select>
+              </div>
+            </div>
+            
+            <div layout layout-align="center center"  layout-padding>
+              <span flex="30">Role:</span>
+              <div flex="50">
+                <md-select ng-model="srlc.crop.name" aria-label="Crop Name">
+                  <md-option>1</md-option>
+                  <md-option>1</md-option>
+                  <md-option>1</md-option>
+                </md-select>
+              </div>
+            </div>
+
+            <div layout layout-align="center center"  layout-padding>
+              <span flex="30">Crop / Season:</span>
+              <div flex="50">
+                <md-select ng-model="srlc.crop.variety" aria-label="Crop Variety">
+                  <md-option>1</md-option>
+                  <md-option>1</md-option>
+                  <md-option>1</md-option>
+                </md-select>
+              </div>
+            </div>
+          </div>    
+        </div>
+        <footer layout layout-align="end center">
+          <md-button class="md-primary md-raised md-hue-2">Save</md-button>
+        </footer>
+      </div>
+    </md-tab>
+  </md-tabs>
+</div>

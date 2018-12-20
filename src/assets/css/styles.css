@@ -1,0 +1,64 @@
+:root {
+  --prim-font: primaryColor;
+}
+
+div.loginDiv {
+  margin-right:auto;
+  margin-left:auto;
+  width:23%;
+  height: 260px;
+  border-radius: 8px;
+  background-color: #F5F5F5;
+}
+
+.md-datepicker-input-container {
+  width: 100%;
+}
+
+.input-container {
+  margin: 3% !important;
+  display: flex;
+  width: 100%;
+}
+
+.input-container-whse {
+  display: flex;
+  width: 100%;
+}
+
+table.md-table:not(.md-row-select) td.md-cell, table.md-table:not(.md-row-select) th.md-column {
+  padding: 0 !important;
+}
+
+table.md-table td.md-cell, table.md-table th.md-column {
+  text-align: center;
+  min-width: 150px;
+}
+
+.whse-define-div {
+  cursor: pointer;
+}
+
+.whse-define-div:hover {
+  background-color: rgba(0,0,0,0.15);
+  cursor: pointer;
+  color : black;
+}
+
+.whse-define-div-selected{
+  background-color: rgba(0,0,0,0.2);
+  color : whitesmoke;
+}
+
+.tbl-hdr-title {
+  min-height: 7%;
+  border-bottom: 1px solid rgba(0,0,0,0.4);
+}
+
+.revenue-cell {
+  text-align: right !important;
+}
+
+md-table-container > table {
+  border-right: 1px solid rgba(0,0,0,0.4);
+}
