@@ -16,7 +16,6 @@ function formatDateArr(data) {
   return data;
 }
 
-
 function tableLimitAndPage() {
   return {
     "limit": 25,

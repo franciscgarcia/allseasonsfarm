@@ -1,112 +1,129 @@
-<div layout="column" flex>
-  <md-tabs md-selected="data.selectedIndex" layout="column" layout-fill flex>
-    <md-tab label="Add New Schedule" layout layout-fill>
-      <!-- tab view wrapper -->
-      <div layout="column" layout-fill>
-        <div layout flex>
-          <div layout="column" flex="65">
-            <div layout layout-align="start center" flex flex-offset="10" layout-padding>
-              <span flex="30">Crop Family:</span>
-              <div flex="50">
-                <md-select ng-model="ppc.crop.family" aria-label="Crop Family">
-                  <md-option>1</md-option>
-                  <md-option>1</md-option>
-                  <md-option>1</md-option>
-                </md-select>
-              </div>
-            </div>
-            
-            <div layout layout-align="start center" flex flex-offset="10" layout-padding>
-              <span flex="30">Crop Name:</span>
-              <div flex="50">
-                <md-select ng-model="ppc.crop.name" aria-label="Crop Name">
-                  <md-option>1</md-option>
-                  <md-option>1</md-option>
-                  <md-option>1</md-option>
-                </md-select>
-              </div>
-            </div>
+<div layout="column" ng-init="ppc.init()" flex>
 
-            <div layout layout-align="start center" flex flex-offset="10" layout-padding>
-              <span flex="30">Crop Variety:</span>
-              <div flex="50">
-                <md-select ng-model="ppc.crop.variety" aria-label="Crop Variety">
-                  <md-option>1</md-option>
-                  <md-option>1</md-option>
-                  <md-option>1</md-option>
-                </md-select>
-              </div>
-            </div>
+  <div ng-if="ppc.loadingData" flex layout layout-align="center center">
+    <div layout="column" layout-align="center center">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      <span style="margin-top: 5px;">Loading data please wait..</span>
+    </div>
+  </div>
 
-            <div layout layout-align="start center" flex flex-offset="10" layout-padding>
-              <span flex="30">Start Date:</span>
-              <div flex="50">
-                <md-datepicker md-open-on-focus md-hide-icons="calendar" ng-model="ppc.crop.start_date" md-placeholder="Enter date" md-min-date="ppc.minDate"></md-datepicker>
-              </div>
-            </div>
-
-            <div layout layout-align="start center" flex flex-offset="10" layout-padding>
-              <span flex="30">Projected Harvest Date:</span>
-              <div flex="50">            
-                <md-datepicker md-open-on-focus md-hide-icons="calendar" ng-model="ppc.crop.harvest_date" md-placeholder="Enter date" md-min-date="ppc.minDate"></md-datepicker>
-              </div>
-            </div>
-          </div>
-
-          <div flex="35" layout layout-align="center center" layout-padding>
-            <md-card>
-              <md-card-content>
-                <div class="md-media-xl md-card-image">
-                  Image Here
+  <div ng-if="!ppc.loadingData" layout flex>
+    <md-tabs md-selected="data.selectedIndex" layout="column" layout-fill flex>
+      <md-tab label="Add New Schedule" layout layout-fill>
+        <!-- tab view wrapper -->
+        <div layout="column" layout-fill>
+          <div layout flex>
+            <div layout="column" flex="65">
+              <div layout layout-align="start center" flex flex-offset="10" layout-padding>
+                <span flex="30">Crop Family:</span>
+                <div flex="50">
+                  <md-select ng-model="ppc.crop.family" aria-label="Crop Family">
+                    <md-option>1</md-option>
+                    <md-option>1</md-option>
+                    <md-option>1</md-option>
+                  </md-select>
                 </div>
-              </md-card-content>
-            </md-card>
-          </div>
-        </div>
-        <footer layout layout-align="center center">
-          <md-button class="md-raised">Set Schedule</md-button>
-          <md-button class="md-raised">View Crop Calendar</md-button>
-          <md-button class="md-primary md-raised md-hue-2">Save</md-button>
-        </footer>
-      </div>
-      <!-- tab view wrapper -->
-    </md-tab>
+              </div>
 
-    <md-tab label="Schedule List">
-      <div layout="column" layout-fill>
-        <div layout flex>
-          <md-table-container flex>
-            <table md-table>
-              <thead md-head>
-                <tr md-row >
-                  <th md-column>Crop Name</th>
-                  <th md-column>Start Date</th>
-                  <th md-column>End Date</th>              
-                  <th md-column>Status</th>
-                </tr>
-              </thead>
-              <tbody md-body>
-                <tr ng-hide="ppc.mainData.length > 0 || ppc.dataLoading" class="md-row">
-                  <td colspan="100%" class="text-center md-cell">No Records Found</td>
-                </tr>
-                <tr class="md-row clickableRow" ng-repeat="data in ppc.mainData | limitTo: ppc.datatable.limit : (ppc.datatable.page -1) * ppc.datatable.limit track by $index"  ng-hide="ppc.dataLoading || !ppc.totalCount" ng-click="ppc.viewSale($event, data)">
-                  <td md-cell>{{ data.transaction_date | date:"MM-dd-yyyy" }}</td>
-                  <td md-cell>{{ data.store_count | number }}</td>
-                  <td md-cell>{{ data.total_transaction_number | number }}</td>    
-                  <td md-cell>{{ data.total_transaction_number | number }}</td>    
-                </tr>
-                <tr ng-show="ppc.dataLoading">
-                  <td colspan="100%"><md-progress-linear></md-progress-linear></td>
-                </tr>
-                <tr ng-show="ppc.errorRetrieve">
-                  <td>Error Loading Data</td>
-                </tr>
-              </tbody>          
-            </table>
-          </md-table-container>
+              <div layout layout-align="start center" flex flex-offset="10" layout-padding>
+                <span flex="30">Crop Name:</span>
+                <div flex="50">
+                  <md-select ng-model="ppc.crop.name" aria-label="Crop Name">
+                    <md-option>1</md-option>
+                    <md-option>1</md-option>
+                    <md-option>1</md-option>
+                  </md-select>
+                </div>
+              </div>
+
+              <div layout layout-align="start center" flex flex-offset="10" layout-padding>
+                <span flex="30">Crop Variety:</span>
+                <div flex="50">
+                  <md-select ng-model="ppc.crop.variety" aria-label="Crop Variety">
+                    <md-option>1</md-option>
+                    <md-option>1</md-option>
+                    <md-option>1</md-option>
+                  </md-select>
+                </div>
+              </div>
+
+              <div layout layout-align="start center" flex flex-offset="10" layout-padding>
+                <span flex="30">Start Date:</span>
+                <div flex="50">
+                  <md-datepicker md-open-on-focus md-hide-icons="calendar" ng-model="ppc.crop.start_date"
+                    md-placeholder="Enter date" md-min-date="ppc.minDate"></md-datepicker>
+                </div>
+              </div>
+
+              <div layout layout-align="start center" flex flex-offset="10" layout-padding>
+                <span flex="30">Projected Harvest Date:</span>
+                <div flex="50">
+                  <md-datepicker md-open-on-focus md-hide-icons="calendar" ng-model="ppc.crop.harvest_date"
+                    md-placeholder="Enter date" md-min-date="ppc.minDate"></md-datepicker>
+                </div>
+              </div>
+            </div>
+
+            <div flex="35" layout layout-align="center center" layout-padding>
+              <md-card>
+                <md-card-content>
+                  <div class="md-media-xl md-card-image">
+                    Image Here
+                  </div>
+                </md-card-content>
+              </md-card>
+            </div>
+          </div>
+          <footer layout layout-align="center center">
+            <md-button class="md-raised">Set Schedule</md-button>
+            <md-button class="md-raised">View Crop Calendar</md-button>
+            <md-button class="md-primary md-raised md-hue-2">Save</md-button>
+          </footer>
         </div>
-        <md-table-pagination md-limit="ppc.datatable.limit" md-limit-options="[25,50,100,200]" md-page="ppc.datatable.page" md-total="{{ppc.totalCount}}" md-page-select="true" md-boundary-links="true" md-on-paginate="onPaginate"></md-table-pagination>
-      </div>     
-    </md-tab>
-  </md-tabs>
+        <!-- tab view wrapper -->
+      </md-tab>
+
+      <md-tab label="Schedule List">
+        <div layout="column" layout-fill>
+          <div layout flex>
+            <md-table-container flex>
+              <table md-table>
+                <thead md-head>
+                  <tr md-row>
+                    <th md-column>Crop Name</th>
+                    <th md-column>Start Date</th>
+                    <th md-column>End Date</th>
+                    <th md-column>Status</th>
+                  </tr>
+                </thead>
+                <tbody md-body>
+                  <tr ng-hide="ppc.mainData.length > 0 || ppc.dataLoading" class="md-row">
+                    <td colspan="100%" class="text-center md-cell">No Records Found</td>
+                  </tr>
+                  <tr class="md-row clickableRow" ng-repeat="data in ppc.mainData | limitTo: ppc.datatable.limit : (ppc.datatable.page -1) * ppc.datatable.limit track by $index">
+                    <td md-cell style="text-align: left;">
+                      <div style="padding-left: 10px;">
+                        {{ data.Produce.Crop }}
+                      </div>
+                    </td>
+                    <td md-cell style="text-align: right;">{{ data.Schedule.StartDate | date }}</td>
+                    <td md-cell style="text-align: right;">{{ data.Schedule.EndDate | date }}</td>
+                    <!-- <td md-cell style="text-align: right;">{{ data.Status }}</td> -->
+                    <td md-cell style="text-align: right;">
+                      <div style="padding-right: 10px;">
+                        Harvesting
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+          </div>
+          <md-table-pagination md-limit="ppc.datatable.limit" md-limit-options="[25,50,100,200]" md-page="ppc.datatable.page"
+            md-total="{{ppc.mainData.length}}" md-page-select="true" md-boundary-links="true" md-on-paginate="onPaginate"></md-table-pagination>
+        </div>
+      </md-tab>
+    </md-tabs>
+  </div>
+
 </div>

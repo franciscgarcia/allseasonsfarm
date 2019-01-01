@@ -1,617 +1,631 @@
-<div ng-if="rc.loadingData" flex layout layout-align="center center">
-  <div layout="column" layout-align="center center">
-    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-    <span style="margin-top: 5px;">Loading data please wait..</span>
-  </div>
-</div>
+<div layout="column" ng-init="rc.init()" flex>
 
-<div layout="column" ng-init="rc.init()" flex ng-if="!rc.loadingData">
-  <md-tabs md-selected="data.selectedIndex" layout="column" layout-fill flex>
-    <md-tab label="Profit History" layout layout-fill>
-      <!-- tab view wrapper -->
-      <div layout="column" layout-fill>
-        <div layout flex="10">
-          <div layout layout-align="start center" layout-padding flex="30">
-            <div flex="30">View By:</div>
-            <div flex>
-              <md-datepicker ng-model="rc.profit.dateSelected" ng-change="rc.viewHistory()" md-placeholder="Choose date"
-                md-mode="month"></md-datepicker>
+  <div ng-if="rc.loadingData" flex layout layout-align="center center">
+    <div layout="column" layout-align="center center">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      <span style="margin-top: 5px;">Loading data please wait..</span>
+    </div>
+  </div>
+
+  <div ng-if="!rc.loadingData" layout flex>
+    <md-tabs md-selected="data.selectedIndex" layout="column" layout-fill flex>
+      <md-tab label="Profit History" layout layout-fill>
+        <!-- tab view wrapper -->
+        <div layout="column" layout-fill>
+          <div layout flex="10">
+            <div layout layout-align="start center" layout-padding flex="30">
+              <div flex="30">View By:</div>
+              <div flex>
+                <md-datepicker ng-model="rc.profit.dateSelected" ng-change="rc.viewHistory()" md-placeholder="Choose date"
+                  md-mode="month"></md-datepicker>
+              </div>
+            </div>
+          </div>
+          <!-- graph -->
+          <div layout layout-align="center center" flex>
+            <div ng-if="(!rc.profit.netProfit && !rc.profit.grossProfit) && !rc.profit.invalidDate" flex layout
+              layout-align="center center">
+              <div layout="column" layout-align="center center">
+                <md-icon class="md-primary">info</md-icon>
+                <span style="margin-top: 5px;">Please select year</span>
+              </div>
+            </div>
+
+            <div ng-if="rc.profit.invalidDate" flex layout layout-align="center center">
+              <div layout="column" layout-align="center center">
+                <md-icon class="md-primary">warning</md-icon>
+                <span style="margin-top: 5px;">No data for selected year. Please choose again</span>
+              </div>
+            </div>
+
+            <div ng-if="!rc.profit.invalidDate" layout="column" layout-fill>
+              <div ng-if="rc.profit.netProfit.length" flex="50">
+                <canvas id="bar" class="chart chart-bar" chart-data="rc.profit.netProfit" chart-labels="rc.labels"
+                  chart-series="rc.series" chart-colors="rc.colors" chart-options="rc.netProfitOptions">
+                </canvas>
+              </div>
+
+              <div ng-if="rc.profit.grossProfit.length" flex="50">
+                <canvas id="bar" class="chart chart-bar" chart-data="rc.profit.grossProfit" chart-labels="rc.labels"
+                  chart-series="rc.series" chart-colors="rc.colors" chart-options="rc.grossProfitOptions">
+                </canvas>
+              </div>
+            </div>
+          </div>
+          <!-- graph -->
+        </div>
+        <!-- tab view wrapper -->
+      </md-tab>
+
+      <md-tab label="Acoounting Books">
+        <div layout>
+          <div layout flex="25">
+            <div layout layout-align="start center" layout-padding>
+              <div flex="30">View By:</div>
+              <div flex>
+                <md-datepicker ng-model="rc.acct.dateSelected" ng-change="rc.dateChanged()" md-placeholder="Choose date"
+                  md-mode="month"></md-datepicker>
+              </div>
             </div>
           </div>
         </div>
-        <!-- graph -->
-        <div layout layout-align="center center" flex>
-          <div ng-if="(!rc.profit.netProfit && !rc.profit.grossProfit) && !rc.profit.invalidDate" flex layout
-            layout-align="center center">
+
+        <!-- tab view wrapper -->
+        <div layout="column" style="height: 100%;">
+          <div ng-if="!rc.acct.tableData && !rc.acct.invalidDate" flex layout layout-align="center center">
             <div layout="column" layout-align="center center">
               <md-icon class="md-primary">info</md-icon>
-              <span style="margin-top: 5px;">Please select year</span>
+              <span style="margin-top: 5px;">Please select month</span>
             </div>
           </div>
 
-          <div ng-if="rc.profit.invalidDate" flex layout layout-align="center center">
+          <div ng-if="rc.acct.invalidDate" flex layout layout-align="center center">
             <div layout="column" layout-align="center center">
               <md-icon class="md-primary">warning</md-icon>
-              <span style="margin-top: 5px;">No data for selected year. Please choose again</span>
+              <span style="margin-top: 5px;">No data for selected month. Please choose again</span>
             </div>
           </div>
-          
-          <div ng-if="!rc.profit.invalidDate" layout="column" layout-fill>
-            <div ng-if="rc.profit.netProfit.length" flex="50">
-              <canvas id="bar" class="chart chart-bar" chart-data="rc.profit.netProfit" chart-labels="rc.labels"
-                chart-series="rc.series" chart-colors="rc.colors" chart-options="rc.netProfitOptions">
-              </canvas>
-            </div>
 
-            <div ng-if="rc.profit.grossProfit.length" flex="50">
-              <canvas id="bar" class="chart chart-bar" chart-data="rc.profit.grossProfit" chart-labels="rc.labels"
-                chart-series="rc.series" chart-colors="rc.colors" chart-options="rc.grossProfitOptions">
-              </canvas>
-            </div>
-          </div>
-        </div>
-        <!-- graph -->
-      </div>
-      <!-- tab view wrapper -->
-    </md-tab>
+          <div ng-if="rc.acct.tableData" layout style="height: 100%;">
+            <md-table-container style="overflow: hidden;" flex="noshrink">
+              <table md-table>
+                <thead md-head>
+                  <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
+                    flex="noshrink"></div>
+                  <tr md-row>
+                    <th md-column>Accounts</th>
+                  </tr>
+                </thead>
+                <tbody md-body>
+                  <tr md-row ng-repeat="column in rc.mainColumn | limitTo: rc.datatable.limit : (rc.datatable.page -1) * rc.datatable.limit track by $index">
+                    <td md-cell>
+                      <div layout layout-padding layout-align="start none" style="font-weight: 600;">
+                        {{ column }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
 
-    <md-tab label="Acoounting Books">
-      <div layout>
-        <div layout flex="25">
-          <div layout layout-align="start center" layout-padding>
-            <div flex="30">View By:</div>
-            <div flex>
-              <md-datepicker ng-model="rc.acct.dateSelected" ng-change="rc.dateChanged()" md-placeholder="Choose date"
-                md-mode="month"></md-datepicker>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- tab view wrapper -->
-      <div layout="column" style="height: 100%;">
-        <div ng-if="!rc.acct.tableData && !rc.acct.invalidDate" flex layout layout-align="center center">
-          <div layout="column" layout-align="center center">
-            <md-icon class="md-primary">info</md-icon>
-            <span style="margin-top: 5px;">Please select month</span>
-          </div>
-        </div>
-
-        <div ng-if="rc.acct.invalidDate" flex layout layout-align="center center">
-          <div layout="column" layout-align="center center">
-            <md-icon class="md-primary">warning</md-icon>
-            <span style="margin-top: 5px;">No data for selected month. Please choose again</span>
-          </div>
-        </div>
-
-        <div ng-if="rc.acct.tableData" layout style="height: 100%;">
-          <md-table-container style="overflow: hidden;" flex="noshrink">
-            <table md-table>
-              <thead md-head>
-                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
-                  flex="noshrink"></div>
-                <tr md-row>
-                  <th md-column>Accounts</th>
-                </tr>
-              </thead>
-              <tbody md-body>
-                <tr md-row ng-repeat="column in rc.mainColumn | limitTo: rc.datatable.limit : (rc.datatable.page -1) * rc.datatable.limit track by $index">
-                  <td md-cell>
-                    <div layout layout-padding layout-align="start none" style="font-weight: 600;">
-                      {{ column }}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </md-table-container>
-
-          <md-table-container style="overflow: hidden;" flex="noshrink">
-            <table md-table>
-              <thead md-head>
-                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
-                  flex>Trial Balance</div>
-                <tr md-row>
-                  <th md-column>Debit</th>
-                  <th md-column>Credit</th>
-                </tr>
-              </thead>
-              <tbody style="border-right: 1px solid black;" md-body>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.trialBalanceData.RawMaterials[0].Debit ? rc.trialBalanceData.RawMaterials[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.RawMaterials[0].Credit ? rc.trialBalanceData.RawMaterials[0].Credit : '0'
+            <md-table-container style="overflow: hidden;" flex="noshrink">
+              <table md-table>
+                <thead md-head>
+                  <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
+                    flex>Trial Balance</div>
+                  <tr md-row>
+                    <th md-column>Debit</th>
+                    <th md-column>Credit</th>
+                  </tr>
+                </thead>
+                <tbody style="border-right: 1px solid black;" md-body>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.trialBalanceData.RawMaterials[0].Debit ? rc.trialBalanceData.RawMaterials[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.RawMaterials[0].Credit ? rc.trialBalanceData.RawMaterials[0].Credit :
+                        '0'
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.trialBalanceData.IndirectMataerials[0].Debit ?
+                      rc.trialBalanceData.IndirectMataerials[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.IndirectMataerials[0].Credit ?
+                        rc.trialBalanceData.IndirectMataerials[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.trialBalanceData.Equipment[0].Debit ? rc.trialBalanceData.Equipment[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.Equipment[0].Credit ? rc.trialBalanceData.Equipment[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.trialBalanceData.WPI[0].Debit ? rc.trialBalanceData.WPI[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.WPI[0].Credit ? rc.trialBalanceData.WPI[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.trialBalanceData.DirectLabor[0].Debit ? rc.trialBalanceData.DirectLabor[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.DirectLabor[0].Credit ? rc.trialBalanceData.DirectLabor[0].Credit : '0'
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.trialBalanceData.IndirectLabor[0].Debit ? rc.trialBalanceData.IndirectLabor[0].Debit : '0'
                       }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.trialBalanceData.IndirectMataerials[0].Debit ?
-                    rc.trialBalanceData.IndirectMataerials[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.IndirectMataerials[0].Credit ?
-                      rc.trialBalanceData.IndirectMataerials[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.trialBalanceData.Equipment[0].Debit ? rc.trialBalanceData.Equipment[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.Equipment[0].Credit ? rc.trialBalanceData.Equipment[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.trialBalanceData.WPI[0].Debit ? rc.trialBalanceData.WPI[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.WPI[0].Credit ? rc.trialBalanceData.WPI[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.trialBalanceData.DirectLabor[0].Debit ? rc.trialBalanceData.DirectLabor[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.DirectLabor[0].Credit ? rc.trialBalanceData.DirectLabor[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.trialBalanceData.IndirectLabor[0].Debit ? rc.trialBalanceData.IndirectLabor[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.IndirectLabor[0].Credit ? rc.trialBalanceData.IndirectLabor[0].Credit :
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.IndirectLabor[0].Credit ? rc.trialBalanceData.IndirectLabor[0].Credit :
+                        '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.trialBalanceData.SalariesExpense[0].Debit ? rc.trialBalanceData.SalariesExpense[0].Debit :
                       '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.trialBalanceData.SalariesExpense[0].Debit ? rc.trialBalanceData.SalariesExpense[0].Debit :
-                    '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.SalariesExpense[0].Credit ? rc.trialBalanceData.SalariesExpense[0].Credit
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.SalariesExpense[0].Credit ?
+                        rc.trialBalanceData.SalariesExpense[0].Credit
+                        : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.trialBalanceData.FGI[0].Debit ?
+                      rc.trialBalanceData.FGI[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.FGI[0].Credit ? rc.trialBalanceData.FGI[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.trialBalanceData.CGS[0].Debit ?
+                      rc.trialBalanceData.CGS[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.CGS[0].Credit ? rc.trialBalanceData.CGS[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.trialBalanceData.SalesRevenue[0].Debit ? rc.trialBalanceData.SalesRevenue[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.SalesRevenue[0].Credit ? rc.trialBalanceData.SalesRevenue[0].Credit :
+                        '0'
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.trialBalanceData.Cash[0].Debit ?
+                      rc.trialBalanceData.Cash[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.trialBalanceData.Cash[0].Credit ? rc.trialBalanceData.Cash[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+
+            <md-table-container style="overflow: hidden;" flex="noshrink">
+              <table md-table>
+                <thead md-head>
+                  <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
+                    flex>Adjusted Trial Balance</div>
+                  <tr md-row>
+                    <th md-column>Debit</th>
+                    <th md-column>Credit</th>
+                  </tr>
+                </thead>
+                <tbody md-body>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.adjustedTrialBalanceData.RawMaterials[0].Debit ?
+                      rc.adjustedTrialBalanceData.RawMaterials[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.RawMaterials[0].Credit ?
+                        rc.adjustedTrialBalanceData.RawMaterials[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.adjustedTrialBalanceData.IndirectMataerials[0].Debit ?
+                      rc.adjustedTrialBalanceData.IndirectMataerials[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.IndirectMataerials[0].Credit ?
+                        rc.adjustedTrialBalanceData.IndirectMataerials[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.adjustedTrialBalanceData.Equipment[0].Debit ?
+                      rc.adjustedTrialBalanceData.Equipment[0].Debit
                       : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.trialBalanceData.FGI[0].Debit ?
-                    rc.trialBalanceData.FGI[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.FGI[0].Credit ? rc.trialBalanceData.FGI[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.trialBalanceData.CGS[0].Debit ?
-                    rc.trialBalanceData.CGS[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.CGS[0].Credit ? rc.trialBalanceData.CGS[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.trialBalanceData.SalesRevenue[0].Debit ? rc.trialBalanceData.SalesRevenue[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.SalesRevenue[0].Credit ? rc.trialBalanceData.SalesRevenue[0].Credit : '0'
-                      }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.trialBalanceData.Cash[0].Debit ?
-                    rc.trialBalanceData.Cash[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.trialBalanceData.Cash[0].Credit ? rc.trialBalanceData.Cash[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </md-table-container>
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.Equipment[0].Credit ?
+                        rc.adjustedTrialBalanceData.Equipment[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.adjustedTrialBalanceData.WPI[0].Debit ? rc.adjustedTrialBalanceData.WPI[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.WPI[0].Credit ? rc.adjustedTrialBalanceData.WPI[0].Credit : '0'
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.adjustedTrialBalanceData.DirectLabor[0].Debit ?
+                      rc.adjustedTrialBalanceData.DirectLabor[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.DirectLabor[0].Credit ?
+                        rc.adjustedTrialBalanceData.DirectLabor[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.adjustedTrialBalanceData.IndirectLabor[0].Debit ?
+                      rc.adjustedTrialBalanceData.IndirectLabor[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.IndirectLabor[0].Credit ?
+                        rc.adjustedTrialBalanceData.IndirectLabor[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.adjustedTrialBalanceData.SalariesExpense[0].Debit ?
+                      rc.adjustedTrialBalanceData.SalariesExpense[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.SalariesExpense[0].Credit ?
+                        rc.adjustedTrialBalanceData.SalariesExpense[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.adjustedTrialBalanceData.FGI[0].Debit ?
+                      rc.adjustedTrialBalanceData.FGI[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.FGI[0].Credit ? rc.adjustedTrialBalanceData.FGI[0].Credit : '0'
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.adjustedTrialBalanceData.CGS[0].Debit ?
+                      rc.adjustedTrialBalanceData.CGS[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.CGS[0].Credit ? rc.adjustedTrialBalanceData.CGS[0].Credit : '0'
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.adjustedTrialBalanceData.SalesRevenue[0].Debit ?
+                      rc.adjustedTrialBalanceData.SalesRevenue[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.SalesRevenue[0].Credit ?
+                        rc.adjustedTrialBalanceData.SalesRevenue[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.adjustedTrialBalanceData.Cash[0].Debit ?
+                      rc.adjustedTrialBalanceData.Cash[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.adjustedTrialBalanceData.Cash[0].Credit ? rc.adjustedTrialBalanceData.Cash[0].Credit :
+                        '0'
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
 
-          <md-table-container style="overflow: hidden;" flex="noshrink">
-            <table md-table>
-              <thead md-head>
-                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
-                  flex>Adjusted Trial Balance</div>
-                <tr md-row>
-                  <th md-column>Debit</th>
-                  <th md-column>Credit</th>
-                </tr>
-              </thead>
-              <tbody md-body>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.adjustedTrialBalanceData.RawMaterials[0].Debit ?
-                    rc.adjustedTrialBalanceData.RawMaterials[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.RawMaterials[0].Credit ?
-                      rc.adjustedTrialBalanceData.RawMaterials[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.adjustedTrialBalanceData.IndirectMataerials[0].Debit ?
-                    rc.adjustedTrialBalanceData.IndirectMataerials[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.IndirectMataerials[0].Credit ?
-                      rc.adjustedTrialBalanceData.IndirectMataerials[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.adjustedTrialBalanceData.Equipment[0].Debit ? rc.adjustedTrialBalanceData.Equipment[0].Debit
-                    : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.Equipment[0].Credit ?
-                      rc.adjustedTrialBalanceData.Equipment[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.adjustedTrialBalanceData.WPI[0].Debit ? rc.adjustedTrialBalanceData.WPI[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.WPI[0].Credit ? rc.adjustedTrialBalanceData.WPI[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.adjustedTrialBalanceData.DirectLabor[0].Debit ?
-                    rc.adjustedTrialBalanceData.DirectLabor[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.DirectLabor[0].Credit ?
-                      rc.adjustedTrialBalanceData.DirectLabor[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.adjustedTrialBalanceData.IndirectLabor[0].Debit ?
-                    rc.adjustedTrialBalanceData.IndirectLabor[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.IndirectLabor[0].Credit ?
-                      rc.adjustedTrialBalanceData.IndirectLabor[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.adjustedTrialBalanceData.SalariesExpense[0].Debit ?
-                    rc.adjustedTrialBalanceData.SalariesExpense[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.SalariesExpense[0].Credit ?
-                      rc.adjustedTrialBalanceData.SalariesExpense[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.adjustedTrialBalanceData.FGI[0].Debit ?
-                    rc.adjustedTrialBalanceData.FGI[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.FGI[0].Credit ? rc.adjustedTrialBalanceData.FGI[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.adjustedTrialBalanceData.CGS[0].Debit ?
-                    rc.adjustedTrialBalanceData.CGS[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.CGS[0].Credit ? rc.adjustedTrialBalanceData.CGS[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.adjustedTrialBalanceData.SalesRevenue[0].Debit ?
-                    rc.adjustedTrialBalanceData.SalesRevenue[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.SalesRevenue[0].Credit ?
-                      rc.adjustedTrialBalanceData.SalesRevenue[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.adjustedTrialBalanceData.Cash[0].Debit ?
-                    rc.adjustedTrialBalanceData.Cash[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.adjustedTrialBalanceData.Cash[0].Credit ? rc.adjustedTrialBalanceData.Cash[0].Credit : '0'
-                      }}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </md-table-container>
+            <md-table-container style="overflow: hidden;" flex="noshrink">
+              <table md-table>
+                <thead md-head>
+                  <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
+                    flex>Statement of Financial Position</div>
+                  <tr md-row>
+                    <th md-column>Debit</th>
+                    <th md-column>Credit</th>
+                  </tr>
+                </thead>
+                <tbody md-body>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sfpData.RawMaterials[0].Debit ? rc.sfpData.RawMaterials[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.RawMaterials[0].Credit ? rc.sfpData.RawMaterials[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sfpData.IndirectMataerials[0].Debit ? rc.sfpData.IndirectMataerials[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.IndirectMataerials[0].Credit ? rc.sfpData.IndirectMataerials[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sfpData.Equipment[0].Debit ? rc.sfpData.Equipment[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.Equipment[0].Credit ? rc.sfpData.Equipment[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sfpData.WPI[0].Debit ? rc.sfpData.WPI[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.WPI[0].Credit ? rc.sfpData.WPI[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sfpData.DirectLabor[0].Debit ? rc.sfpData.DirectLabor[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.DirectLabor[0].Credit ? rc.sfpData.DirectLabor[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sfpData.IndirectLabor[0].Debit ? rc.sfpData.IndirectLabor[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.IndirectLabor[0].Credit ? rc.sfpData.IndirectLabor[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sfpData.SalariesExpense[0].Debit ? rc.sfpData.SalariesExpense[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.SalariesExpense[0].Credit ? rc.sfpData.SalariesExpense[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.sfpData.FGI[0].Debit ? rc.sfpData.FGI[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.FGI[0].Credit ? rc.sfpData.FGI[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.sfpData.CGS[0].Debit ? rc.sfpData.CGS[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.CGS[0].Credit ? rc.sfpData.CGS[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sfpData.SalesRevenue[0].Debit ? rc.sfpData.SalesRevenue[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.SalesRevenue[0].Credit ? rc.sfpData.SalesRevenue[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.sfpData.Cash[0].Debit ? rc.sfpData.Cash[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sfpData.Cash[0].Credit ? rc.sfpData.Cash[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
 
-          <md-table-container style="overflow: hidden;" flex="noshrink">
-            <table md-table>
-              <thead md-head>
-                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
-                  flex>Statement of Financial Position</div>
-                <tr md-row>
-                  <th md-column>Debit</th>
-                  <th md-column>Credit</th>
-                </tr>
-              </thead>
-              <tbody md-body>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sfpData.RawMaterials[0].Debit ? rc.sfpData.RawMaterials[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.RawMaterials[0].Credit ? rc.sfpData.RawMaterials[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sfpData.IndirectMataerials[0].Debit ? rc.sfpData.IndirectMataerials[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.IndirectMataerials[0].Credit ? rc.sfpData.IndirectMataerials[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sfpData.Equipment[0].Debit ? rc.sfpData.Equipment[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.Equipment[0].Credit ? rc.sfpData.Equipment[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sfpData.WPI[0].Debit ? rc.sfpData.WPI[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.WPI[0].Credit ? rc.sfpData.WPI[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sfpData.DirectLabor[0].Debit ? rc.sfpData.DirectLabor[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.DirectLabor[0].Credit ? rc.sfpData.DirectLabor[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sfpData.IndirectLabor[0].Debit ? rc.sfpData.IndirectLabor[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.IndirectLabor[0].Credit ? rc.sfpData.IndirectLabor[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sfpData.SalariesExpense[0].Debit ? rc.sfpData.SalariesExpense[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.SalariesExpense[0].Credit ? rc.sfpData.SalariesExpense[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.sfpData.FGI[0].Debit ? rc.sfpData.FGI[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.FGI[0].Credit ? rc.sfpData.FGI[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.sfpData.CGS[0].Debit ? rc.sfpData.CGS[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.CGS[0].Credit ? rc.sfpData.CGS[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sfpData.SalesRevenue[0].Debit ? rc.sfpData.SalesRevenue[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.SalesRevenue[0].Credit ? rc.sfpData.SalesRevenue[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.sfpData.Cash[0].Debit ? rc.sfpData.Cash[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sfpData.Cash[0].Credit ? rc.sfpData.Cash[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </md-table-container>
-
-          <md-table-container style="overflow: hidden;" flex="noshrink">
-            <table md-table>
-              <thead md-head>
-                <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
-                  flex>Statement of Comprehensive Income</div>
-                <tr md-row>
-                  <th md-column>Debit</th>
-                  <th md-column>Credit</th>
-                </tr>
-              </thead>
-              <tbody md-body>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sciData.RawMaterials[0].Debit ? rc.sciData.RawMaterials[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.RawMaterials[0].Credit ? rc.sciData.RawMaterials[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sciData.IndirectMataerials[0].Debit ? rc.sciData.IndirectMataerials[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.IndirectMataerials[0].Credit ? rc.sciData.IndirectMataerials[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sciData.Equipment[0].Debit ? rc.sciData.Equipment[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.Equipment[0].Credit ? rc.sciData.Equipment[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sciData.WPI[0].Debit ? rc.sciData.WPI[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.WPI[0].Credit ? rc.sciData.WPI[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sciData.DirectLabor[0].Debit ? rc.sciData.DirectLabor[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.DirectLabor[0].Credit ? rc.sciData.DirectLabor[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sciData.IndirectLabor[0].Debit ? rc.sciData.IndirectLabor[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.IndirectLabor[0].Credit ? rc.sciData.IndirectLabor[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sciData.SalariesExpense[0].Debit ? rc.sciData.SalariesExpense[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.SalariesExpense[0].Credit ? rc.sciData.SalariesExpense[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.sciData.FGI[0].Debit ? rc.sciData.FGI[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.FGI[0].Credit ? rc.sciData.FGI[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.sciData.CGS[0].Debit ? rc.sciData.CGS[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.CGS[0].Credit ? rc.sciData.CGS[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">
-                    {{ rc.sciData.SalesRevenue[0].Debit ? rc.sciData.SalesRevenue[0].Debit : '0' }}
-                  </td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.SalesRevenue[0].Credit ? rc.sciData.SalesRevenue[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-                <tr md-row>
-                  <td md-cell class="revenue-cell">{{ rc.sciData.Cash[0].Debit ? rc.sciData.Cash[0].Debit : '0' }}</td>
-                  <td md-cell>
-                    <div layout layout-padding layout-align="end">
-                      {{ rc.sciData.Cash[0].Credit ? rc.sciData.Cash[0].Credit : '0' }}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </md-table-container>
+            <md-table-container style="overflow: hidden;" flex="noshrink">
+              <table md-table>
+                <thead md-head>
+                  <div md-colors="{background: 'primary-hue-2'}" class="tbl-hdr-title" layout layout-align="center center"
+                    flex>Statement of Comprehensive Income</div>
+                  <tr md-row>
+                    <th md-column>Debit</th>
+                    <th md-column>Credit</th>
+                  </tr>
+                </thead>
+                <tbody md-body>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sciData.RawMaterials[0].Debit ? rc.sciData.RawMaterials[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.RawMaterials[0].Credit ? rc.sciData.RawMaterials[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sciData.IndirectMataerials[0].Debit ? rc.sciData.IndirectMataerials[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.IndirectMataerials[0].Credit ? rc.sciData.IndirectMataerials[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sciData.Equipment[0].Debit ? rc.sciData.Equipment[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.Equipment[0].Credit ? rc.sciData.Equipment[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sciData.WPI[0].Debit ? rc.sciData.WPI[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.WPI[0].Credit ? rc.sciData.WPI[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sciData.DirectLabor[0].Debit ? rc.sciData.DirectLabor[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.DirectLabor[0].Credit ? rc.sciData.DirectLabor[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sciData.IndirectLabor[0].Debit ? rc.sciData.IndirectLabor[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.IndirectLabor[0].Credit ? rc.sciData.IndirectLabor[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sciData.SalariesExpense[0].Debit ? rc.sciData.SalariesExpense[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.SalariesExpense[0].Credit ? rc.sciData.SalariesExpense[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.sciData.FGI[0].Debit ? rc.sciData.FGI[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.FGI[0].Credit ? rc.sciData.FGI[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.sciData.CGS[0].Debit ? rc.sciData.CGS[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.CGS[0].Credit ? rc.sciData.CGS[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">
+                      {{ rc.sciData.SalesRevenue[0].Debit ? rc.sciData.SalesRevenue[0].Debit : '0' }}
+                    </td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.SalesRevenue[0].Credit ? rc.sciData.SalesRevenue[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr md-row>
+                    <td md-cell class="revenue-cell">{{ rc.sciData.Cash[0].Debit ? rc.sciData.Cash[0].Debit : '0' }}</td>
+                    <td md-cell>
+                      <div layout layout-padding layout-align="end">
+                        {{ rc.sciData.Cash[0].Credit ? rc.sciData.Cash[0].Credit : '0' }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+          </div>
         </div>
-      </div>
-      <!-- tab view wrapper -->
-    </md-tab>
-  </md-tabs>
+        <!-- tab view wrapper -->
+      </md-tab>
+    </md-tabs>
+  </div>
+
 </div>
