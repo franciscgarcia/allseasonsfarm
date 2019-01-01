@@ -170,16 +170,20 @@ angular.module("RevenueModule")
       let year = selectedDate[1];
 
       //filter data by year and month; return empty array if no data found
-      vm.acct.tableData = vm.mainData[year][month] ? vm.mainData[year][month] : [];
+      if(vm.mainData[year]) {
+        vm.acct.tableData = vm.mainData[year][month];
 
-      //assign sub-table data
-      vm.trialBalanceData = vm.acct.tableData ? vm.acct.tableData.TrialBalance : undefined;
-
-      vm.adjustedTrialBalanceData = vm.acct.tableData ? vm.acct.tableData.AdjustedTrialBalance : undefined;
-
-      vm.sfpData = vm.acct.tableData ? vm.acct.tableData.SFP : undefined;
-
-      vm.sciData = vm.acct.tableData ? vm.acct.tableData.SCI : undefined;
+        //assign sub-table data
+        vm.trialBalanceData = vm.acct.tableData ? vm.acct.tableData.TrialBalance : undefined;
+  
+        vm.adjustedTrialBalanceData = vm.acct.tableData ? vm.acct.tableData.AdjustedTrialBalance : undefined;
+  
+        vm.sfpData = vm.acct.tableData ? vm.acct.tableData.SFP : undefined;
+  
+        vm.sciData = vm.acct.tableData ? vm.acct.tableData.SCI : undefined;
+      } else {
+        vm.acct.tableData = null;
+      }
 
       //if no data, inform user
       vm.acct.invalidDate = !vm.acct.tableData ? true : false;

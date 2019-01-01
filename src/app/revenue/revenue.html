@@ -25,14 +25,14 @@
             layout-align="center center">
             <div layout="column" layout-align="center center">
               <md-icon class="md-primary">info</md-icon>
-              <span style="margin-top: 5px;">Please select date</span>
+              <span style="margin-top: 5px;">Please select year</span>
             </div>
           </div>
 
           <div ng-if="rc.profit.invalidDate" flex layout layout-align="center center">
             <div layout="column" layout-align="center center">
               <md-icon class="md-primary">warning</md-icon>
-              <span style="margin-top: 5px;">No data for selected date. Please choose again</span>
+              <span style="margin-top: 5px;">No data for selected year. Please choose again</span>
             </div>
           </div>
           
@@ -73,14 +73,14 @@
         <div ng-if="!rc.acct.tableData && !rc.acct.invalidDate" flex layout layout-align="center center">
           <div layout="column" layout-align="center center">
             <md-icon class="md-primary">info</md-icon>
-            <span style="margin-top: 5px;">Please select date</span>
+            <span style="margin-top: 5px;">Please select month</span>
           </div>
         </div>
 
         <div ng-if="rc.acct.invalidDate" flex layout layout-align="center center">
           <div layout="column" layout-align="center center">
             <md-icon class="md-primary">warning</md-icon>
-            <span style="margin-top: 5px;">No data for selected date. Please choose again</span>
+            <span style="margin-top: 5px;">No data for selected month. Please choose again</span>
           </div>
         </div>
 
