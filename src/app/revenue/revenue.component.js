@@ -169,8 +169,8 @@ angular.module("RevenueModule")
       let month = selectedDate[0];
       let year = selectedDate[1];
 
-      //filter data by year and month
-      vm.acct.tableData = vm.mainData[year][month];
+      //filter data by year and month; return empty array if no data found
+      vm.acct.tableData = vm.mainData[year][month] ? vm.mainData[year][month] : [];
 
       //assign sub-table data
       vm.trialBalanceData = vm.acct.tableData ? vm.acct.tableData.TrialBalance : undefined;
