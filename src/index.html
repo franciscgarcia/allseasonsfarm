@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <base href="/">
   <meta charset="utf-8">
@@ -12,6 +13,23 @@
   <link type="text/css" href="/src/assets/css/styles.css" rel="stylesheet">
 
   <script type="text/javascript" src="/src/assets/lib/angular.min.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBp85B6-b38MaK2rgEQZdcZcKG02gztRBk",
+      authDomain: "newseasons18.firebaseapp.com",
+      databaseURL: "https://newseasons18.firebaseio.com",
+      projectId: "newseasons18",
+      storageBucket: "newseasons18.appspot.com",
+      messagingSenderId: "399064577720"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  <!-- AngularFire -->
+  <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
   <script type="text/javascript" src="/src/assets/lib/angular-animate.min.js"></script>
   <script type="text/javascript" src="/src/assets/lib/angular-aria.min.js"></script>
   <script type="text/javascript" src="/src/assets/lib/angular-cookies.min.js"></script>
@@ -31,38 +49,39 @@
 <body ng-app="AllSeasonsFarmApp" layout="column">
   <ui-view layout="column" flex></ui-view>
 </body>
-  <script type="text/javascript" src="/src/app.module.js"></script>  
-  <script type="text/javascript" src="/src/app.router.js"></script>
-  <script type="text/javascript" src="/src/app.directives.js"></script>
-  <script type="text/javascript" src="/src/app.filters.js"></script>
-  <script type="text/javascript" src="/src/app.themes.js"></script>
+<script type="text/javascript" src="/src/app.module.js"></script>
+<script type="text/javascript" src="/src/app.router.js"></script>
+<script type="text/javascript" src="/src/app.directives.js"></script>
+<script type="text/javascript" src="/src/app.filters.js"></script>
+<script type="text/javascript" src="/src/app.themes.js"></script>
 
-  <script src="/src/app/login/login.module.js"></script>
-  <script src="/src/app/home/home.module.js"></script>
-  <script src="/src/app/revenue/revenue.module.js"></script>
-  <script src="/src/app/prod-plan/prod-plan.module.js"></script>
-  <script src="/src/app/crop-trend/crop-trend.module.js"></script>
-  <script src="/src/app/whse-inv/whse-inv.module.js"></script>
-  <script src="/src/app/staff-roles/staff-roles.module.js"></script>
+<script src="/src/app/login/login.module.js"></script>
+<script src="/src/app/home/home.module.js"></script>
+<script src="/src/app/revenue/revenue.module.js"></script>
+<script src="/src/app/prod-plan/prod-plan.module.js"></script>
+<script src="/src/app/crop-trend/crop-trend.module.js"></script>
+<script src="/src/app/whse-inv/whse-inv.module.js"></script>
+<script src="/src/app/staff-roles/staff-roles.module.js"></script>
 
-  <script src="/src/app/login/login.component.js"></script>
-  
-  <script src="/src/app/home/home.component.js"></script>
-  <script src="/src/app/home/home.service.js"></script>
+<script src="/src/app/login/login.component.js"></script>
 
-  <script src="/src/app/revenue/revenue.component.js"></script>
-  <script src="/src/app/revenue/revenue.service.js"></script>
+<script src="/src/app/home/home.component.js"></script>
+<script src="/src/app/home/home.service.js"></script>
 
-  <script src="/src/app/prod-plan/prod-plan.component.js"></script>
-  <script src="/src/app/prod-plan/prod-plan.service.js"></script>
+<script src="/src/app/revenue/revenue.component.js"></script>
+<script src="/src/app/revenue/revenue.service.js"></script>
 
-  <script src="/src/app/crop-trend/crop-trend.component.js"></script>
-  <script src="/src/app/crop-trend/crop-trend.service.js"></script>
+<script src="/src/app/prod-plan/prod-plan.component.js"></script>
+<script src="/src/app/prod-plan/prod-plan.service.js"></script>
 
-  <script src="/src/app/whse-inv/whse-inv.component.js"></script>
-  <script src="/src/app/whse-inv/whse-inv.service.js"></script>
+<script src="/src/app/crop-trend/crop-trend.component.js"></script>
+<script src="/src/app/crop-trend/crop-trend.service.js"></script>
 
-  <script src="/src/app/staff-roles/staff-roles.component.js"></script>
-  <script src="/src/app/staff-roles/staff-roles.service.js"></script>
-  <script src="/src/app/staff-roles/modal/add-employee.mdl.ctrl.js"></script>
+<script src="/src/app/whse-inv/whse-inv.component.js"></script>
+<script src="/src/app/whse-inv/whse-inv.service.js"></script>
+
+<script src="/src/app/staff-roles/staff-roles.component.js"></script>
+<script src="/src/app/staff-roles/staff-roles.service.js"></script>
+<script src="/src/app/staff-roles/modal/add-employee.mdl.ctrl.js"></script>
+
 </html>

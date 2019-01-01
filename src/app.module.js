@@ -1,1 +1,1 @@
-angular.module("AllSeasonsFarmApp", ["ngCookies", "ngMaterial", "ngAnimate", "md.data.table", "ui.router", "chart.js", "LoginModule", "HomeModule", "RevenueModule", "ProdPlanModule", "CropTrendModule", "WhseInvModule", "StaffRolesModule"]);
+angular.module("AllSeasonsFarmApp", ["ngCookies", "ngMaterial", "ngAnimate", "md.data.table", "ui.router", "chart.js", "LoginModule", "HomeModule", "RevenueModule", "ProdPlanModule", "CropTrendModule", "WhseInvModule", "StaffRolesModule", 'firebase']);

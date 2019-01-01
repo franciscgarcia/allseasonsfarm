@@ -1,6 +1,11 @@
 angular.module("RevenueModule")
-  .service("RevenueService", function() {
+  .service("RevenueService", function($http, $firebaseObject) {
     var vm = this;
+
+    vm.getData = function() {
+      var ref = firebase.database().ref();
+      return $firebaseObject(ref);
+    }
 
     vm.getFirstTableData = function() {
       var data = {

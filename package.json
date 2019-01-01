@@ -8,16 +8,23 @@
   "author": "Francis Garcia",
   "license": "ISC",
   "dependencies": {
+    "@angular/fire": "^5.1.1",
     "@uirouter/angularjs": "^1.0.20",
-    "angular": "^1.7.4",
+    "angular": "^1.7.5",
     "angular-animate": "^1.7.4",
     "angular-aria": "^1.7.4",
+    "angular-bootstrap-calendar": "^1.0.0",
     "angular-cookies": "^1.7.4",
     "angular-material": "^1.1.10",
     "angular-material-data-table": "^0.10.10",
     "angular-messages": "^1.7.4",
+    "angular-ui-bootstrap": "^2.5.6",
+    "angularfire": "^2.3.0",
     "body-parser": "^1.18.3",
+    "bootstrap": "^4.2.1",
     "express": "^4.16.3",
+    "firebase": "^5.7.2",
+    "moment": "^2.23.0",
     "mysql": "^2.16.0"
   }
 }
