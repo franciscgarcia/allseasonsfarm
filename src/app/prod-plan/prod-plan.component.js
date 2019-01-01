@@ -7,7 +7,6 @@ angular.module("ProdPlanModule")
     vm.cropName = [];
     vm.cropVariety = [];
     vm.minDate = new Date(Date.now());
-
     vm.datatable = tableLimitAndPage();
 
     vm.init = function () {
@@ -26,7 +25,7 @@ angular.module("ProdPlanModule")
             vm.mainData.push(success.ProductionPlanning[key]);
           })
 
-          //get produce data for dorpdowns
+          //get produce data for dropdowns
           let produceKeys = Object.keys(success.Produce);
           produceKeys.forEach(key => {
             if(success.Produce[key].CropFamily) {
@@ -45,10 +44,11 @@ angular.module("ProdPlanModule")
             }
           })
 
+          //remove duplicate entries
           vm.cropFamily = Array.from(new Set(vm.cropFamily));
           vm.cropName = Array.from(new Set(vm.cropName));
           vm.cropVariety = Array.from(new Set(vm.cropVariety));
-          console.log(vm.cropFamily, vm.cropName, vm.cropVariety);
+          // console.log(vm.cropFamily, vm.cropName, vm.cropVariety);
         })
         .catch(function (error) {
           console.error(error);
