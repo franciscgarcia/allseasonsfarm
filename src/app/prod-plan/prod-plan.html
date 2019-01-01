@@ -18,9 +18,7 @@
                 <span flex="30">Crop Family:</span>
                 <div flex="50">
                   <md-select ng-model="ppc.crop.family" aria-label="Crop Family">
-                    <md-option>1</md-option>
-                    <md-option>1</md-option>
-                    <md-option>1</md-option>
+                    <md-option ng-repeat="family in ppc.cropFamily" ng-value="family">{{family}}</md-option>
                   </md-select>
                 </div>
               </div>
@@ -29,9 +27,8 @@
                 <span flex="30">Crop Name:</span>
                 <div flex="50">
                   <md-select ng-model="ppc.crop.name" aria-label="Crop Name">
-                    <md-option>1</md-option>
-                    <md-option>1</md-option>
-                    <md-option>1</md-option>
+                    <md-option ng-repeat="name in ppc.cropName" ng-value="name">{{name}}</md-option>
+
                   </md-select>
                 </div>
               </div>
@@ -40,9 +37,8 @@
                 <span flex="30">Crop Variety:</span>
                 <div flex="50">
                   <md-select ng-model="ppc.crop.variety" aria-label="Crop Variety">
-                    <md-option>1</md-option>
-                    <md-option>1</md-option>
-                    <md-option>1</md-option>
+                      <md-option ng-repeat="variety in ppc.cropVariety" ng-value="variety">{{variety}}</md-option>
+
                   </md-select>
                 </div>
               </div>

@@ -1,0 +1,7 @@
+firebase deploying notes:
+-- do not change firebase.json
+-- make sure all files are updated(dependencies/files in library/etc)
+-- do not change index.html and app.router.js in public directory unless you have new inclusions
+-- make sure the format in index.html is correct. refer to existing index.html in public directory
+-- paste new "app" folder into public/src/app
+-- enter firebase deploy (if you're logged in)
